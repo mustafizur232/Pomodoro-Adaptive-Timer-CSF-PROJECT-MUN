@@ -115,3 +115,11 @@ def ask_productivity_feedback():
     except ValueError:
         print("Invalid input, skipping adaptive adjustment this time.")
         return None
+    def compute_average_rating(ratings):
+        """
+    Compute the average of the rating list.
+    Returns None if the list is empty.
+    """
+    if not ratings:
+        return None
+    return sum(ratings) / len(ratings)
