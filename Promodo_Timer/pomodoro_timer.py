@@ -50,3 +50,12 @@ def load_settings():
                     cleaned_ratings.append(r_int)
             except (TypeError, ValueError):
                 pass
+            return {
+            "work_minutes": work,
+            "break_minutes": brk,
+            "ratings": cleaned_ratings[-MAX_RATING_HISTORY:]
+        }
+
+    except (ValueError, json.JSONDecodeError, OSError):
+        # If something goes wrong, fall back to default settings
+        return default_settings
