@@ -185,3 +185,35 @@ def print_menu(settings):
     print("4) Exit")
     choice = input("Choose an option (1-4): ").strip()
     return choice
+def change_durations(settings):
+    """
+    Let the user change work and break durations manually.
+    """
+    print("\nChange durations (leave blank to keep current).")
+
+    # Change work time
+    new_work = input(f"New work duration in minutes (current {settings['work_minutes']}): ").strip()
+    if new_work != "":
+        try:
+            val = int(new_work)
+            if val >= MIN_WORK_MINUTES:
+                settings["work_minutes"] = val
+            else:
+                print(f"Work duration must be at least {MIN_WORK_MINUTES} minutes. Keeping old value.")
+        except ValueError:
+            print("Invalid number for work duration. Keeping old value.")
+
+    # Change break time
+    new_break = input(f"New break duration in minutes (current {settings['break_minutes']}): ").strip()
+    if new_break != "":
+        try:
+            val = int(new_break)
+            if val >= MIN_BREAK_MINUTES:
+                settings["break_minutes"] = val
+            else:
+                print(f"Break duration must be at least {MIN_BREAK_MINUTES} minutes. Keeping old value.")
+        except ValueError:
+            print("Invalid number for break duration. Keeping old value.")
+
+    print(f"Updated durations: work={settings['work_minutes']} min, break={settings['break_minutes']} min.")
+    return settings
