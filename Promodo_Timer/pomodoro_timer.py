@@ -33,7 +33,7 @@ def load_settings():
         work = int(data.get("work_minutes", 25))
         brk = int(data.get("break_minutes", 5))
         ratings = data.get("ratings", [])
-        
+
         # Basic validation
         if work <= 0:
             work = 25
@@ -41,7 +41,8 @@ def load_settings():
             brk = 5
         if not isinstance(ratings, list):
             ratings = []
-            # Keep only valid rating values
+
+        # Keep only valid rating values
         cleaned_ratings = []
         for r in ratings:
             try:
@@ -50,7 +51,8 @@ def load_settings():
                     cleaned_ratings.append(r_int)
             except (TypeError, ValueError):
                 pass
-            return {
+
+        return {
             "work_minutes": work,
             "break_minutes": brk,
             "ratings": cleaned_ratings[-MAX_RATING_HISTORY:]
@@ -59,8 +61,10 @@ def load_settings():
     except (ValueError, json.JSONDecodeError, OSError):
         # If something goes wrong, fall back to default settings
         return default_settings
-    def save_settings(settings):
-        """
+
+
+def save_settings(settings):
+    """
     Save work/break minutes and rating history into a JSON file.
     """
     try:
@@ -68,9 +72,10 @@ def load_settings():
             json.dump(settings, f)
     except OSError:
         print("Warning: could not save settings.")
-        
-        def countdown(total_seconds, label):
-        """
+
+
+def countdown(total_seconds, label):
+    """
     Simple countdown that prints mm:ss each second.
 
     total_seconds: how many seconds to count down
@@ -92,6 +97,7 @@ def load_settings():
 
     print("\nSession finished!")
     return True
+
 
 def ask_productivity_feedback():
     """
@@ -115,14 +121,18 @@ def ask_productivity_feedback():
     except ValueError:
         print("Invalid input, skipping adaptive adjustment this time.")
         return None
-    def compute_average_rating(ratings):
-        """
+
+
+def compute_average_rating(ratings):
+    """
     Compute the average of the rating list.
     Returns None if the list is empty.
     """
     if not ratings:
         return None
     return sum(ratings) / len(ratings)
+
+
 def adapt_durations(settings):
     """
     Use a simple statistical algorithm (average of past ratings) to adapt
@@ -131,8 +141,6 @@ def adapt_durations(settings):
     - If avg >= 4.0: increase work time, slightly reduce break time.
     - If avg <= 2.5: decrease work time, slightly increase break time.
     - Otherwise: keep times the same.
-
-    All changes are clamped within sensible limits.
     """
     ratings = settings.get("ratings", [])
 
@@ -166,6 +174,8 @@ def adapt_durations(settings):
     settings["work_minutes"] = work
     settings["break_minutes"] = brk
     return settings
+
+
 def print_menu(settings):
     """
     Show the main menu and current settings.
@@ -185,6 +195,8 @@ def print_menu(settings):
     print("4) Exit")
     choice = input("Choose an option (1-4): ").strip()
     return choice
+
+
 def change_durations(settings):
     """
     Let the user change work and break durations manually.
@@ -217,6 +229,8 @@ def change_durations(settings):
 
     print(f"Updated durations: work={settings['work_minutes']} min, break={settings['break_minutes']} min.")
     return settings
+
+
 def main():
     settings = load_settings()
 
