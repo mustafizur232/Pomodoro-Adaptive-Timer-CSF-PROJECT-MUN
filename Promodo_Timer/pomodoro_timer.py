@@ -92,3 +92,26 @@ def load_settings():
 
     print("\nSession finished!")
     return True
+
+def ask_productivity_feedback():
+    """
+    Ask the user how the work session went.
+    Returns an integer between 1 and 5, or None if the user skips.
+    """
+    print("\nHow productive were you this work session?")
+    print("1 = Very unproductive, 5 = Very productive")
+    answer = input("Enter a number from 1 to 5 (or press Enter to skip): ").strip()
+
+    if answer == "":
+        return None
+
+    try:
+        rating = int(answer)
+        if 1 <= rating <= 5:
+            return rating
+        else:
+            print("Invalid number, skipping adaptive adjustment this time.")
+            return None
+    except ValueError:
+        print("Invalid input, skipping adaptive adjustment this time.")
+        return None
