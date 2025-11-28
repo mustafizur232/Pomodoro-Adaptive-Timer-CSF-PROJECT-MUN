@@ -59,3 +59,12 @@ def load_settings():
     except (ValueError, json.JSONDecodeError, OSError):
         # If something goes wrong, fall back to default settings
         return default_settings
+    def save_settings(settings):
+        """
+    Save work/break minutes and rating history into a JSON file.
+    """
+    try:
+        with open(SETTINGS_FILE, "w") as f:
+            json.dump(settings, f)
+    except OSError:
+        print("Warning: could not save settings.")
