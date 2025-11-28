@@ -5,9 +5,9 @@ import os
 SETTINGS_FILE = "pomodoro_settings.json"
 
 # Some simple limits so things don't get crazy
-MIN_WORK_MINUTES = 10
+MIN_WORK_MINUTES = 2
 MAX_WORK_MINUTES = 60
-MIN_BREAK_MINUTES = 3
+MIN_BREAK_MINUTES = 1
 MAX_BREAK_MINUTES = 20
 MAX_RATING_HISTORY = 10  # how many past ratings we consider
 
@@ -77,7 +77,6 @@ def save_settings(settings):
 def countdown(total_seconds, label):
     """
     Simple countdown that prints mm:ss each second.
-
     total_seconds: how many seconds to count down
     label: 'Work' or 'Break' (used for messages)
     """
@@ -137,7 +136,6 @@ def adapt_durations(settings):
     """
     Use a simple statistical algorithm (average of past ratings) to adapt
     both work and break durations.
-
     - If avg >= 4.0: increase work time, slightly reduce break time.
     - If avg <= 2.5: decrease work time, slightly increase break time.
     - Otherwise: keep times the same.

@@ -32,7 +32,6 @@
 
 
 
-
 ### Known Bugs or Limitations
 
 - Limited Adaptive Logic: The adaptive logic currently only adjusts the work and break durations based on the average rating of the last few sessions. More complex algorithms (e.g., machine learning) could be implemented for better adaptability.
