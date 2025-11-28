@@ -166,3 +166,22 @@ def adapt_durations(settings):
     settings["work_minutes"] = work
     settings["break_minutes"] = brk
     return settings
+def print_menu(settings):
+    """
+    Show the main menu and current settings.
+    """
+    print("\n========== Pomodoro Timer ==========")
+    print(f"Current work duration : {settings['work_minutes']} minutes")
+    print(f"Current break duration: {settings['break_minutes']} minutes")
+    if settings["ratings"]:
+        avg = compute_average_rating(settings["ratings"])
+        print(f"Past sessions recorded: {len(settings['ratings'])}, avg rating: {avg:.2f}")
+    else:
+        print("No productivity data recorded yet.")
+    print("------------------------------------")
+    print("1) Start work session")
+    print("2) Start break")
+    print("3) Change durations manually")
+    print("4) Exit")
+    choice = input("Choose an option (1-4): ").strip()
+    return choice
