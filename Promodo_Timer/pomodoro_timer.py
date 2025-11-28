@@ -123,3 +123,46 @@ def ask_productivity_feedback():
     if not ratings:
         return None
     return sum(ratings) / len(ratings)
+def adapt_durations(settings):
+    """
+    Use a simple statistical algorithm (average of past ratings) to adapt
+    both work and break durations.
+
+    - If avg >= 4.0: increase work time, slightly reduce break time.
+    - If avg <= 2.5: decrease work time, slightly increase break time.
+    - Otherwise: keep times the same.
+
+    All changes are clamped within sensible limits.
+    """
+    ratings = settings.get("ratings", [])
+
+    avg = compute_average_rating(ratings)
+    if avg is None:
+        print("Not enough data yet to adapt durations.")
+        return settings
+
+    work = settings["work_minutes"]
+    brk = settings["break_minutes"]
+
+    print(f"\nAverage productivity rating (last {len(ratings)} sessions): {avg:.2f}")
+
+    if avg >= 4.0:
+        # user is doing well: increase challenge, shorter breaks
+        new_work = min(work + 5, MAX_WORK_MINUTES)
+        new_break = max(brk - 1, MIN_BREAK_MINUTES)
+        print(f"High productivity detected. Next work session: {new_work} min, break: {new_break} min.")
+        work, brk = new_work, new_break
+
+    elif avg <= 2.5:
+        # user is struggling: shorten work, longer breaks
+        new_work = max(work - 5, MIN_WORK_MINUTES)
+        new_break = min(brk + 1, MAX_BREAK_MINUTES)
+        print(f"Low productivity detected. Next work session: {new_work} min, break: {new_break} min.")
+        work, brk = new_work, new_break
+
+    else:
+        print("Average productivity. Keeping durations unchanged.")
+
+    settings["work_minutes"] = work
+    settings["break_minutes"] = brk
+    return settings
