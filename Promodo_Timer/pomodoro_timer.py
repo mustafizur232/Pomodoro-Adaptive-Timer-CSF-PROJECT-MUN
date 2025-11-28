@@ -41,3 +41,12 @@ def load_settings():
             brk = 5
         if not isinstance(ratings, list):
             ratings = []
+            # Keep only valid rating values
+        cleaned_ratings = []
+        for r in ratings:
+            try:
+                r_int = int(r)
+                if 1 <= r_int <= 5:
+                    cleaned_ratings.append(r_int)
+            except (TypeError, ValueError):
+                pass
