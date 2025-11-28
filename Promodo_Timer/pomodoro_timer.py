@@ -217,3 +217,43 @@ def change_durations(settings):
 
     print(f"Updated durations: work={settings['work_minutes']} min, break={settings['break_minutes']} min.")
     return settings
+def main():
+    settings = load_settings()
+
+    while True:
+        choice = print_menu(settings)
+
+        if choice == "1":
+            # Work session
+            seconds = settings["work_minutes"] * 60
+            finished = countdown(seconds, "Work")
+
+            if finished:
+                rating = ask_productivity_feedback()
+                if rating is not None:
+                    # add new rating and keep only recent ones
+                    settings["ratings"].append(rating)
+                    settings["ratings"] = settings["ratings"][-MAX_RATING_HISTORY:]
+                    settings = adapt_durations(settings)
+                save_settings(settings)
+
+        elif choice == "2":
+            # Break session (no feedback, just rest)
+            seconds = settings["break_minutes"] * 60
+            countdown(seconds, "Break")
+
+        elif choice == "3":
+            settings = change_durations(settings)
+            save_settings(settings)
+
+        elif choice == "4":
+            print("Goodbye!")
+            save_settings(settings)
+            break
+
+        else:
+            print("Invalid choice, please enter 1, 2, 3, or 4.")
+
+
+if __name__ == "__main__":
+    main()
