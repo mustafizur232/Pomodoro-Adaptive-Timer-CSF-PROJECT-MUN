@@ -33,3 +33,11 @@ def load_settings():
         work = int(data.get("work_minutes", 25))
         brk = int(data.get("break_minutes", 5))
         ratings = data.get("ratings", [])
+        
+        # Basic validation
+        if work <= 0:
+            work = 25
+        if brk <= 0:
+            brk = 5
+        if not isinstance(ratings, list):
+            ratings = []
