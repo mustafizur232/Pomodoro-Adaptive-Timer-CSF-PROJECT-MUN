@@ -68,3 +68,27 @@ def load_settings():
             json.dump(settings, f)
     except OSError:
         print("Warning: could not save settings.")
+        
+        def countdown(total_seconds, label):
+        """
+    Simple countdown that prints mm:ss each second.
+
+    total_seconds: how many seconds to count down
+    label: 'Work' or 'Break' (used for messages)
+    """
+    print(f"\n--- {label} session started ---")
+
+    try:
+        while total_seconds > 0:
+            mins, secs = divmod(total_seconds, 60)
+            timer_str = f"{mins:02d}:{secs:02d}"
+            print(f"\rTime left: {timer_str}", end="")
+            time.sleep(1)
+            total_seconds -= 1
+    except KeyboardInterrupt:
+        # Let user interrupt the timer without crashing the program
+        print("\nTimer interrupted by user.")
+        return False
+
+    print("\nSession finished!")
+    return True
